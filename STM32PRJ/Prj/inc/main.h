@@ -29,12 +29,11 @@
 #include "common.h"
 #include "pwr_mod.h"
 #include "int_eeprom.h"
-#include "card.h"
 #include "boot.h"
 #include "flash_if.h"
 
-#define Version 	"KGS00-V1.7"
-#define VersionByte 17
+#define Version 	"Versiyon V1.0"
+#define VersionByte 10
 
 #define Vana_Kapali  0 // kullan1lmaz ak311 e özel ayn1 kütüpaneyi kulland1klar1 için eklendi
 #define Cezalar  0 // kullan1lmaz ak311 e özel
