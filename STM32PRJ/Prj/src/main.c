@@ -3,7 +3,7 @@
   * @file    /src/main.c
   * @author  Coskun ERGAN
   * @version V1.0
-  * @date    20-september-2013
+  * @date    21-september-2013
   * @brief   MeasureBox.. Sensor Reading System..
   ******************************************************************************
   * @copy
