@@ -15,19 +15,16 @@
 #include "extern_reg.c"
 
 /****************************************************************************************************/
-void Buzzer_On(void)
+void Bip(void)
 {
-	if(Buzzer_Status)
-	{	
 		Pin_Low(Buzzer);
 		DelayMs(20);
 		Pin_High(Buzzer);
-	}
 }	
 /****************************************************************************************************/
 void Gprs_Working(void)
 {
-	  Buzzer_On();
+	  Bip();
 
 //////////////////////////////////////////		
 		IWDG_ReloadCounter();
@@ -39,9 +36,9 @@ void Gprs_Working(void)
 /****************************************************************************************************/	
 int main(void)
 { 
+	
 		if(RCC_GetFlagStatus(RCC_FLAG_IWDGRST) != RESET ) 
 		{
-//				Gprs_Task=TRUE; // Wdt reset olusturmus
 				WDT_Reset_S;
 		}
 		RCC_ClearFlag();
@@ -50,9 +47,9 @@ int main(void)
 		IWDG_SetPrescaler(IWDG_Prescaler_256);
 		IWDG_SetReload(0xFFFF); // 30sn sonra yeniden yüklenmezse wdt reset atacak
 		IWDG_ReloadCounter();
-		IWDG_Enable();
+//		IWDG_Enable();
 //-------------- Basic Setup --------------	
-		Pwr_Init(Swd_Off); 
+		Pwr_Init(Swd_On); 
 //------------ Input Setup ----------------
 		Pin_Input(Pulse_1);
 			Pin_Input(Pulse_2);
@@ -64,18 +61,14 @@ int main(void)
 		Pin_Output(Pulse_Enb);
 			Pin_Output_OD(Gsm_Rst);
 				Pin_Output(Fm_Enb);
-					Pin_Output(M_Sleep);
-						Pin_Output(M_Next);
-							Pin_Output(M_Back);
-								Pin_Output_OD(Gsm_Enb);	
-								  Pin_Output(Buzzer); 
+					Pin_Output_OD(Gsm_Enb);	
+						Pin_Output(Buzzer); 
 //------------ High Level -----------------
+		Bip();
 		Pin_High(Buzzer);
 			Pin_High(Gsm_Enb);
 				Pin_High(Fm_Enb);
 					Pin_High(Gsm_Rst);
-//------------- Low Level -----------------				
-				Pin_Low(M_Sleep);			
 //-------------- RAM Cleans ---------------	
 		for(ram=0x200;ram<0x67F4;ram+=4)
 		{
@@ -84,27 +77,23 @@ int main(void)
 		}	
 //----------- RCT & ALARM Setup ------------
 		RTC_Config();
-	  Date_Set(__DATE__ __TIME__);	
+//	  Date_Set(__DATE__ __TIME__);	
 		Rtc_Alarm_Hours();
-		Rtc_Alarm_Day();	
-//------------------------------------------
+		Stop_Mod_Init();
+//-------------- COMs init -----------------
 		Ram_Islem_Com_Init();
+//------------ Start Functions -------------
+		Vcc_Read();
 /****************************************************************************************************/
 /******************************************** WHILE(1) **********************************************/
 /****************************************************************************************************/
-    Stop_Mod_Init();
-		Vcc_Read();
 while(1){
+		RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART2, ENABLE); // Debug portu aktif et(ram islem)
 
-if(Task){
-
-		RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART2, ENABLE); // ram islem usart2 rx aç
-
-		Task=FALSE;
+		fprintf(lcd,"merhaba");
 	
-		RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART2, DISABLE); // ram islem usart2 rx kapat	
-		}	
-
+	
+		RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART2, DISABLE);  // Debug portu kapat
 //------------------- Stop Mod On --------------------
     Stop();	
 //----------------------------------------------------

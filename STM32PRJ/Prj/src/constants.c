@@ -74,7 +74,9 @@
 
  
 		USART_TypeDef* Sel_Com;	
-		
+		FILE *lcd;
+		FILE *gsm;	
+		FILE *debug;	
 			
 		uint8_t 	RamRxCount						__attribute__ ((at(0x200022EF)));	
 		uint8_t 	RamTxCount						__attribute__ ((at(0x200022F0)));		

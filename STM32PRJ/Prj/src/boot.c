@@ -72,7 +72,7 @@ void Bootloader(uint32_t Sizeof_Boot_File)
 //----------------- Ekran mesaj1 gösteriliyor -----------------------	
 //			Lcd_Str (Alt1,"Bootloader    "); 
 //			Lcd_Str (Alt2,"              "); 	
-			Buzzer_On();
+			Bip();
 			DelayS(1);
 		//  sprintf(Text_Message_Str,"Download Error..."); // buradan sonra takilirsa down yapamadi mesaji ver.
 //-------------------- Buffer Rom siliniyor  ------------------------	

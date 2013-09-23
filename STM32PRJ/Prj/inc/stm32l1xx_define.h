@@ -35,12 +35,10 @@ extern uint32_t  Error_Status;
 	 
 
 #define  	 Gsm_Com	    COM1
-#define 	 Optik_Com	  COM2
-#define  	 Debug_Com	  COM3
-
+#define  	 Debug_Com	  COM2
+ 
 #define  	 Gsm_Com_Source	    STM_COM1
-#define 	 Optik_Com_Source	  STM_COM2
-#define  	 Debug_Com_Source	  STM_COM3	 
+#define  	 Debug_Com_Source	  STM_COM2	 
 	 
 	 
 	 

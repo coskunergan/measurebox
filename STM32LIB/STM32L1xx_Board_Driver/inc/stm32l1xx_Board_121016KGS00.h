@@ -242,37 +242,41 @@ pwm puls frekansi duty cycle %50 _|-|_|-|_|-  */
 
 ////////////////////////////////////////////////////
 //																								//
-//					 LCD ST7522 Tanimlamalari							//
+//					 LCD  Tanimlamalari	      						//
 //																								//
 ////////////////////////////////////////////////////
 
-#define  Lcd_Si_Pin						GPIO_Pin_14
-#define  Lcd_Si_Port					GPIOB
-#define  Lcd_Si_Clk						RCC_AHBPeriph_GPIOB  
+#define  Lcd_Rs_Pin						GPIO_Pin_14
+#define  Lcd_Rs_Port					GPIOB
+#define  Lcd_Rs_Clk						RCC_AHBPeriph_GPIOB  
   
-#define  Lcd_Scl_Pin					GPIO_Pin_2
-#define  Lcd_Scl_Port					GPIOB
-#define  Lcd_Scl_Clk					RCC_AHBPeriph_GPIOB
+#define  Lcd_E_Pin						GPIO_Pin_2
+#define  Lcd_E_Port						GPIOB
+#define  Lcd_E_Clk						RCC_AHBPeriph_GPIOB
 
-#define  Lcd_A0_Pin						GPIO_Pin_1
-#define  Lcd_A0_Port					GPIOB
-#define  Lcd_A0_Clk						RCC_AHBPeriph_GPIOB  
+#define  Lcd_D4_Pin						GPIO_Pin_1
+#define  Lcd_D4_Port					GPIOB
+#define  Lcd_D4_Clk						RCC_AHBPeriph_GPIOB  
+
+#define  Lcd_D5_Pin						GPIO_Pin_5
+#define  Lcd_D5_Port					GPIOC
+#define  Lcd_D5_Clk						RCC_AHBPeriph_GPIOC
+
+#define  Lcd_D6_Pin						GPIO_Pin_13
+#define  Lcd_D6_Port					GPIOC
+#define  Lcd_D6_Clk						RCC_AHBPeriph_GPIOC 
+
+#define  Lcd_D7_Pin						GPIO_Pin_0
+#define  Lcd_D7_Port					GPIOA
+#define  Lcd_D7_Clk						RCC_AHBPeriph_GPIOA 
 
 #define  Lcd_Enb_Pin					GPIO_Pin_13
 #define  Lcd_Enb_Port					GPIOB
 #define  Lcd_Enb_Clk					RCC_AHBPeriph_GPIOB
 
-#define  Lcd_Rst_Pin					GPIO_Pin_5
-#define  Lcd_Rst_Port					GPIOC
-#define  Lcd_Rst_Clk					RCC_AHBPeriph_GPIOC
-
 #define  Lcd_BL_Pin						GPIO_Pin_0
 #define  Lcd_BL_Port					GPIOB
 #define  Lcd_BL_Clk						RCC_AHBPeriph_GPIOB
-
-#define  Lcd_CS_Pin						GPIO_Pin_1
-#define  Lcd_CS_Port					GPIOB
-#define  Lcd_CS_Clk						RCC_AHBPeriph_GPIOB 
 
 ////////////////////////////////////////////////////
 //																								//
@@ -341,6 +345,29 @@ pwm puls frekansi duty cycle %50 _|-|_|-|_|-  */
 #define I2C_Speed              300000      // haberleþme hýzý
 #define TimeOut_I2c_Ee         50000      // zaman aþýmý süresi		
 #define I2Cx_SLAVE_ADDRESS7    0xA0       // eeprom adresi
+
+/******************************************************************/
+////////////////////////////////////////////////////
+//																								//
+//     Software I2C HABERLESME PIN TABLOSU	      //
+//																								//
+////////////////////////////////////////////////////
+
+/**
+  * @brief  Software I2C EEPROM Interface pins
+  */  
+   
+#define SOFT_I2C_SCL_PIN            GPIO_Pin_10                  
+#define SOFT_I2C_SCL_PORT      		  GPIOA       
+#define SOFT_I2C_SCL_CLK        	  RCC_AHBPeriph_GPIOA
+ 
+#define SOFT_I2C_SDA_PIN            GPIO_Pin_9                
+#define SOFT_I2C_SDA_SOURCE					GPIO_PinSource9  // pin
+#define SOFT_I2C_SDA_PORT          	GPIOA                    
+#define SOFT_I2C_SDA_CLK         	  RCC_AHBPeriph_GPIOA
+ 
+#define Soft_E2prom_Kbit       512				// eeprom boyutu
+#define Soft_Ee_Delay          50         // haberlesmedeki bekleme hizi
 
 /******************************************************************/
 

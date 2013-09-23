@@ -18,7 +18,9 @@
 /* Includes ------------------------------------------------------------------*/
 #include "stm32l1xx.h"			// cpu tanimlamalari
 #include "stm32l1xx_it.h"   // kesme fonksiyonlari
-#include "stdio.h"					// printf,scanf,sprintf fonksiyonlari
+#include <stdio.h>		
+#include <rtl.h>
+#include <stdlib.h>         // printf,scanf,sprintf fonksiyonlari
 #include "string.h"
 #include "stm32l1xx_conf.h"  //  standart gpio,pwr,comp,tim,adc,dac,flash vs. kütüpaneler
 #include "stm32l1xx_Board_121016KGS00.h"  // board pin port tanimlamalari
@@ -50,7 +52,7 @@
 
 /* Exported functions ------------------------------------------------------- */
 void TimingDelay_Decrement(void);
-void Buzzer_On(void);
+void Bip(void);
 void DelayMs(uint32_t nTime);
 void DelayS(uint32_t nTime); 
 void Vcc_Read(void);
@@ -62,6 +64,7 @@ void Day_Working(void);
 void Hours_Working(void);
 void Second_Working(void);
 void Language_Change(void);
+
 
 #endif /* __MAIN_H */
 

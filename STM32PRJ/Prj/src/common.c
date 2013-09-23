@@ -14,10 +14,11 @@
 #include "common.h"
 #include "extern_reg.c"
 
-#define  SCANF_TIMEOUT  2000    // 10ms  ( 9600 için 1ms 115k için 8us de almasi gerekir. )
 #define  PRINTF_TIMEOUT 2000	  // 10ms  ( 9600 için 1ms 115k için 8us de göndermesi gerekir. )
 
 
+
+
 /****************************************************************************/
 /****************************************************************************/
 /****************************************************************************/
@@ -26,13 +27,6 @@
 /****************************************************************************/
 /****************************************************************************/
 /****************************************************************************/
-/**
-  * @brief  Convert a string to an integer
-  * @param  inputstr: The string to be converted
-  * @param  intnum: The integer value
-  * @retval 1: Correct
-  *         0: Error
-  */
 uint32_t Str2Int(uint8_t *inputstr, int32_t *intnum)
 {
   uint32_t i = 0, res = 0;
@@ -142,36 +136,47 @@ void Int2Str(uint8_t* str, int32_t intnum)
 	
 }
 /****************************************************************************/
-int fputc(int ch, FILE *f)
+
+#pragma import(__use_full_stdio)
+
+
+int lcd_printf(int ch,FILE *f) 
 {
-//		Time_Out_Usart = PRINTF_TIMEOUT;
-	
-    USART_SendData(Sel_Com, (uint8_t) ch);
-		/* Seçilen usart dan byte gönderilmesi bekleniyor */
-	
-    while (USART_GetFlagStatus(Sel_Com, USART_FLAG_TC) == RESET)
-		{
-//		if(!Time_Out_Usart)return EOF; 
-//		Time_Out_Usart--;		
-		}
-		
-    return ch;
+
+    return (int)ch;
 }
 /****************************************************************************/
-int fgetc(FILE *f)
+int gsm_printf(char *ch,FILE *f) 
 {
-//		Time_Out_Usart = SCANF_TIMEOUT;
-		/* Seçilen usart dan byte gelmesi bekleniyor */
-		
-    while (USART_GetFlagStatus(Sel_Com, USART_FLAG_RXNE) == RESET)
+    uint32_t	Time_Out_Usart = PRINTF_TIMEOUT;
+	
+    USART_SendData(Gsm_Com_Source, (int) ch);
+	
+		/* Seçilen usart dan byte gönderilmesi bekleniyor */
+    while (USART_GetFlagStatus(Gsm_Com_Source, USART_FLAG_TC) == RESET)
 		{
-//		if(!Time_Out_Usart)return EOF; 
-//		Time_Out_Usart--;	
+				if(!Time_Out_Usart)return EOF; 
+				Time_Out_Usart--;		
 		}
-
-    return (int)USART_ReceiveData(Sel_Com);
+		
+    return (int)ch;
 }
-
+/****************************************************************************/
+int debug_printf(char *ch,FILE *f) 
+{
+    uint32_t	Time_Out_Usart = PRINTF_TIMEOUT;
+	
+    USART_SendData(Debug_Com_Source, (int) ch);
+	
+		/* Seçilen usart dan byte gönderilmesi bekleniyor */
+    while (USART_GetFlagStatus(Debug_Com_Source, USART_FLAG_TC) == RESET)
+		{
+				if(!Time_Out_Usart)return EOF; 
+				Time_Out_Usart--;		
+		}
+		
+    return (int)ch;
+}
 /****************************************************************************/
 void Usart_Init(COM_TypeDef COM ,uint32_t baud)
 {
@@ -226,7 +231,7 @@ void Ram_Islem_Com_Init(void)
 			NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
 			NVIC_Init(&NVIC_InitStructure);			
 	
-			Usart_Init(Optik_Com,115200);
+			Usart_Init(Debug_Com,115200);
 	
 			USART_ITConfig(USART2, USART_IT_RXNE, ENABLE);
 	
