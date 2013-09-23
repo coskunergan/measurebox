@@ -16,14 +16,15 @@
 
 
 /* Includes ------------------------------------------------------------------*/
-#include "stm32l1xx.h"			// cpu tanimlamalari
-#include "stm32l1xx_it.h"   // kesme fonksiyonlari
+#include <stm32l1xx.h>
 #include <stdio.h>		
 #include <rtl.h>
-#include <stdlib.h>         // printf,scanf,sprintf fonksiyonlari
+#include <stdlib.h>         
 #include "string.h"
+#include "stm32l1xx_it.h"   // kesme fonksiyonlari
 #include "stm32l1xx_conf.h"  //  standart gpio,pwr,comp,tim,adc,dac,flash vs. kütüpaneler
 #include "stm32l1xx_Board_121016KGS00.h"  // board pin port tanimlamalari
+#include "stm32l1xx_hd44780.h"  // pin isim uyarlamalari 
 #include "stm32l1xx_define.h"  // pin isim uyarlamalari 
 
 #include "rtc.h"

@@ -14,16 +14,22 @@
 #include "common.h"
 #include "extern_reg.c"
 
-#define  PRINTF_TIMEOUT 2000	  // 10ms  ( 9600 için 1ms 115k için 8us de göndermesi gerekir. )
+struct __FILE 
+{
+    int handle;  
+};
 
+enum 
+{
+    LCD_HANDLE, 
+    GSM_HANDLE,
+    DBG_HANDLE
+} ;
 
+FILE __stdin = {LCD_HANDLE} ;
+FILE __stdout = {GSM_HANDLE} ;
+FILE __stderr = {DBG_HANDLE} ;
 
-
-/****************************************************************************/
-/****************************************************************************/
-/****************************************************************************/
-/****************************************************************************/
-/****************************************************************************/
 /****************************************************************************/
 /****************************************************************************/
 /****************************************************************************/
@@ -136,46 +142,54 @@ void Int2Str(uint8_t* str, int32_t intnum)
 	
 }
 /****************************************************************************/
-
-#pragma import(__use_full_stdio)
-
-
-int lcd_printf(int ch,FILE *f) 
+int fputc(int ch, FILE *f) 
 {
-
-    return (int)ch;
-}
-/****************************************************************************/
-int gsm_printf(char *ch,FILE *f) 
-{
+    int ret = EOF ;
     uint32_t	Time_Out_Usart = PRINTF_TIMEOUT;
 	
-    USART_SendData(Gsm_Com_Source, (int) ch);
-	
-		/* Seçilen usart dan byte gönderilmesi bekleniyor */
-    while (USART_GetFlagStatus(Gsm_Com_Source, USART_FLAG_TC) == RESET)
-		{
-				if(!Time_Out_Usart)return EOF; 
-				Time_Out_Usart--;		
-		}
-		
-    return (int)ch;
-}
-/****************************************************************************/
-int debug_printf(char *ch,FILE *f) 
-{
-    uint32_t	Time_Out_Usart = PRINTF_TIMEOUT;
-	
-    USART_SendData(Debug_Com_Source, (int) ch);
-	
-		/* Seçilen usart dan byte gönderilmesi bekleniyor */
-    while (USART_GetFlagStatus(Debug_Com_Source, USART_FLAG_TC) == RESET)
-		{
-				if(!Time_Out_Usart)return EOF; 
-				Time_Out_Usart--;		
-		}
-		
-    return (int)ch;
+    switch( f->handle )
+    {
+        case LCD_HANDLE :
+
+				    if(GPIO_ReadOutputDataBit(Lcd_Enb_Port,Lcd_BL_Pin))
+				  	   LCD_Init(); 
+				 
+						if(ch=='\n')
+							 LCD_GoTo(1,0); // jump to 2. line
+						else
+							LCD_SendData(ch);  // add character to lcd screen
+
+            ret = ch ;
+            break ;
+
+        case GSM_HANDLE :
+            // Write character to GSM port
+						USART_SendData(Gsm_Com_Source, (int) ch);
+				
+						while (USART_GetFlagStatus(Gsm_Com_Source, USART_FLAG_TC) == RESET)
+						{
+								if(!Time_Out_Usart)return EOF; 
+								Time_Out_Usart--;		
+						}
+            ret = ch ;
+            break ;
+        case DBG_HANDLE :
+            // Write character to debug port
+						USART_SendData(Debug_Com_Source, (int) ch);
+
+						while (USART_GetFlagStatus(Debug_Com_Source, USART_FLAG_TC) == RESET)
+						{
+								if(!Time_Out_Usart)return EOF; 
+								Time_Out_Usart--;		
+						}
+            ret = ch ;
+            break ;				
+
+        default :
+            break ;
+			}
+
+    return ret ;
 }
 /****************************************************************************/
 void Usart_Init(COM_TypeDef COM ,uint32_t baud)
@@ -190,9 +204,7 @@ void Usart_Init(COM_TypeDef COM ,uint32_t baud)
 		USART_InitStructure.USART_Mode = USART_Mode_Rx | USART_Mode_Tx;
 
 		COM_Init(COM, &USART_InitStructure);
-	
-		if(COM==Gsm_Com)Sel_Com=Gsm_Com_Source;	
-	
+
 }
 /****************************************************************************/
 void Ram_Islem_Com_Init(void)

@@ -82,6 +82,9 @@ int main(void)
 		Stop_Mod_Init();
 //-------------- COMs init -----------------
 		Ram_Islem_Com_Init();
+		Usart_Init(Gsm_Com,38400);
+//-------------- Lcd init ------------------
+		LCD_Pin_Init();
 //------------ Start Functions -------------
 		Vcc_Read();
 /****************************************************************************************************/
@@ -90,8 +93,9 @@ int main(void)
 while(1){
 		RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART2, ENABLE); // Debug portu aktif et(ram islem)
 
-		fprintf(lcd,"merhaba");
-	
+		fprintf(lcd,"hello.. \n %f ",123.45);
+	  fprintf(gsm,"AT\r");
+	  fprintf(dbg,"debug com tested");
 	
 		RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART2, DISABLE);  // Debug portu kapat
 //------------------- Stop Mod On --------------------

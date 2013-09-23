@@ -34,8 +34,11 @@
 
 #define SerialPutString(x) Serial_PutString((uint8_t*)(x))
 
+#define lcd stdin
+#define gsm stdout
+#define dbg stderr
 
-
+#define  PRINTF_TIMEOUT 2000	  // 10ms  ( 9600 için 1ms 115k için 8us de göndermesi gerekir. )
 
 /* Private variables ---------------------------------------------------------*/
 typedef  void (*pFunction)(void);

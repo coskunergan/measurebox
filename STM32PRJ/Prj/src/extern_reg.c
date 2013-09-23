@@ -66,10 +66,6 @@ extern RTC_TimeTypeDef RTC_TimeStruct;
 		extern uint8_t 	RamRxTxbuffer[9];	
 		
 				extern volatile uint32_t  TimingDelay;	
-				
-				extern FILE *lcd;
-				extern FILE *gsm;
-				extern FILE *debug;
 
 /***********************************END OF FILE********************************/
 
