@@ -80,12 +80,8 @@ void LCD_SendByte(uint8_t cmd)
 		 else 					 GPIO_ResetBits(Lcd_D7_Port, Lcd_D7_Pin);	
 
 		 GPIO_ResetBits(Lcd_E_Port, Lcd_E_Pin);
-		/* GPIO_ResetBits(LCD_PORT_D4, LCD_D4);
-		 GPIO_ResetBits(LCD_PORT_D5, LCD_D5);
-		 GPIO_ResetBits(LCD_PORT_D6, LCD_D6);
-		 GPIO_ResetBits(LCD_PORT_D7, LCD_D7); */
 		 GPIO_ResetBits(Lcd_Rs_Port, Lcd_Rs_Pin);
-		 delay_us(50);// <<<<<<<<< kalibre edilecek
+		 delay_us(50);
 }
 
 //==========================================================================================
@@ -125,6 +121,7 @@ void LCD_SendText(char *text)
 void LCD_Clear(void)
 {
 		LCD_SendCmd(0x01);
+		 delay_us(150);
 }
 
 //==========================================================================================
@@ -226,12 +223,12 @@ void LCD_Init(void)
 			 GPIO_ResetBits(Lcd_E_Port, Lcd_E_Pin);
 		 }
 		 GPIO_SetBits(Lcd_E_Port, Lcd_E_Pin);
-		 DelayMs(50);
+		 DelayMs(20);
 		 GPIO_ResetBits(Lcd_D4_Port, Lcd_D4_Pin);
 		 GPIO_SetBits(Lcd_D5_Port, Lcd_D5_Pin);
 		 GPIO_ResetBits(Lcd_D6_Port, Lcd_D6_Pin);
 		 GPIO_ResetBits(Lcd_D7_Port, Lcd_D7_Pin);	
-		 DelayMs(50);
+		 DelayMs(20);
 		 GPIO_ResetBits(Lcd_E_Port, Lcd_E_Pin);
 		 LCD_SendCmd(0x28);
 		 LCD_SendCmd(0x08);

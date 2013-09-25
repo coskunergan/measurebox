@@ -542,6 +542,11 @@
               <FileType>1</FileType>
               <FilePath>..\..\STM32LIB\STM32L1xx_Custom_Driver\src\stm32l1xx_hd44780.c</FilePath>
             </File>
+            <File>
+              <FileName>stm32l1xx_sht11.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\STM32LIB\STM32L1xx_Custom_Driver\src\stm32l1xx_sht11.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

@@ -24,8 +24,9 @@
 #include "stm32l1xx_it.h"   // kesme fonksiyonlari
 #include "stm32l1xx_conf.h"  //  standart gpio,pwr,comp,tim,adc,dac,flash vs. kütüpaneler
 #include "stm32l1xx_Board_121016KGS00.h"  // board pin port tanimlamalari
-#include "stm32l1xx_hd44780.h"  // pin isim uyarlamalari 
 #include "stm32l1xx_define.h"  // pin isim uyarlamalari 
+#include "stm32l1xx_hd44780.h"  // 2X16 LCD KÜTÜPANES1
+#include "stm32l1xx_sht11.h"  // isi nem sensörü kütüpanesi
 
 #include "rtc.h"
 #include "GL865.h"

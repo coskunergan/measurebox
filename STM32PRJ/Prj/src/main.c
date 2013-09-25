@@ -36,7 +36,7 @@ void Gprs_Working(void)
 /****************************************************************************************************/	
 int main(void)
 { 
-	
+	  float  isi,nem;
 		if(RCC_GetFlagStatus(RCC_FLAG_IWDGRST) != RESET ) 
 		{
 				WDT_Reset_S;
@@ -51,8 +51,8 @@ int main(void)
 //-------------- Basic Setup --------------	
 		Pwr_Init(Swd_On); 
 //------------ Input Setup ----------------
-		Pin_Input(Pulse_1);
-			Pin_Input(Pulse_2);
+		Pin_Output_OD(Pulse_1);
+			Pin_Output_OD(Pulse_2);
 				Pin_Input(Pulse_3);
 					Pin_Input(Led_PwrMon);
 						Pin_Input(ButonA);
@@ -69,6 +69,7 @@ int main(void)
 			Pin_High(Gsm_Enb);
 				Pin_High(Fm_Enb);
 					Pin_High(Gsm_Rst);
+					  Pin_High(Pulse_Enb);
 //-------------- RAM Cleans ---------------	
 		for(ram=0x200;ram<0x67F4;ram+=4)
 		{
@@ -90,13 +91,23 @@ int main(void)
 /****************************************************************************************************/
 /******************************************** WHILE(1) **********************************************/
 /****************************************************************************************************/
+	 //fprintf(gsm,"AT\r");
+	 //fprintf(dbg,"debug com tested");
 while(1){
 		RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART2, ENABLE); // Debug portu aktif et(ram islem)
-
-		fprintf(lcd,"hello.. \n %f ",123.45);
-	  fprintf(gsm,"AT\r");
-	  fprintf(dbg,"debug com tested");
 	
+		LCD_Clear();
+	
+		if(SHT11_Oku(&isi,&nem))
+		{
+			fprintf(lcd,"ISI: %3.1f\n",isi);
+			fprintf(lcd,"NEM: %3.1f\n",nem);	
+		}
+		else
+			fprintf(lcd,"Sensör Yok!!");
+	
+		DelayMs(500);
+		
 		RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART2, DISABLE);  // Debug portu kapat
 //------------------- Stop Mod On --------------------
     Stop();	
