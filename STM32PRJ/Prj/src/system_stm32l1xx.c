@@ -352,7 +352,7 @@ static void SetSysClock(void)
     RCC->CFGR |= (uint32_t)RCC_CFGR_PPRE1_DIV1;
   
     RCC->ICSCR &= (uint32_t)((uint32_t)~(RCC_ICSCR_MSIRANGE));
-    RCC->ICSCR |= (uint32_t)RCC_ICSCR_MSIRANGE_6;
+    RCC->ICSCR |= (uint32_t)RCC_ICSCR_MSIRANGE_5;
 
     /* Select MSI as system clock source */
     RCC->CFGR &= (uint32_t)((uint32_t)~(RCC_CFGR_SW));

@@ -86,6 +86,10 @@ int main(void)
 		Usart_Init(Gsm_Com,38400);
 //-------------- Lcd init ------------------
 		LCD_Pin_Init();
+		fprintf(lcd,"MeasureBox SRS\n");
+		fprintf(lcd,"Version:1.0");
+		DelayMs(2000);
+		LCD_Lp_Off();
 //------------ Start Functions -------------
 		Vcc_Read();
 /****************************************************************************************************/
@@ -96,7 +100,7 @@ int main(void)
 while(1){
 		RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART2, ENABLE); // Debug portu aktif et(ram islem)
 	
-		LCD_Clear();
+		LCD_GoTo(0,0);
 	
 		if(SHT11_Oku(&isi,&nem))
 		{
