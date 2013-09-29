@@ -81,20 +81,20 @@ void Stop_Mod_Init(void)
 	EXTI_DeInit();	
 		
 	/* Button A ve B kesme pini olarak gösteriliyor WKUP-1,2 */
-	SYSCFG_EXTILineConfig(EXTI_PortSourceGPIOA,EXTI_PinSource0);
-	SYSCFG_EXTILineConfig(EXTI_PortSourceGPIOC,EXTI_PinSource13);
+//	SYSCFG_EXTILineConfig(EXTI_PortSourceGPIOA,EXTI_PinSource0);
+//	SYSCFG_EXTILineConfig(EXTI_PortSourceGPIOC,EXTI_PinSource13);
 		
   /* EXTI configuration *******************************************************/
-  EXTI_ClearITPendingBit(EXTI_Line0);
-	EXTI_ClearITPendingBit(EXTI_Line13);
+//  EXTI_ClearITPendingBit(EXTI_Line0);
+//	EXTI_ClearITPendingBit(EXTI_Line13);
   EXTI_ClearITPendingBit(EXTI_Line20);
-	
+/*	
 	EXTI_InitStructure.EXTI_Line =  EXTI_Line0 | EXTI_Line13;
   EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt;
   EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Falling;
   EXTI_InitStructure.EXTI_LineCmd = ENABLE;
   EXTI_Init(&EXTI_InitStructure);
-	
+	*/
 	EXTI_InitStructure.EXTI_Line = EXTI_Line20;
   EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt;
   EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Rising;
@@ -109,19 +109,18 @@ void Stop_Mod_Init(void)
   NVIC_Init(&NVIC_InitStructure);   
  
    /* Buton kesmelerine 2. öncelik tan1n1yor */
-  NVIC_InitStructure.NVIC_IRQChannel =  EXTI0_IRQn;
+/*  NVIC_InitStructure.NVIC_IRQChannel =  EXTI0_IRQn;
   NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
   NVIC_InitStructure.NVIC_IRQChannelSubPriority = 1;
   NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
   NVIC_Init(&NVIC_InitStructure); 
 	
-   /* Buton kesmelerine 2. öncelik tan1n1yor */
   NVIC_InitStructure.NVIC_IRQChannel =  EXTI15_10_IRQn;
   NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
   NVIC_InitStructure.NVIC_IRQChannelSubPriority = 2;
   NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
   NVIC_Init(&NVIC_InitStructure); 	
-	
+*/	
   /* RTC Wakeup Interrupt Generation: Clock Source: RTCDiv_16  */
   RTC_WakeUpClockConfig(RTC_WakeUpClock_RTCCLK_Div16);
 // 0x66 =50ms	
@@ -130,7 +129,7 @@ void Stop_Mod_Init(void)
 // 0x1FFF =4sn
 // 0xF000 =30sn 
 // 0xFFFF =32sn
-  RTC_SetWakeUpCounter(0xCC); // 100 mS
+  RTC_SetWakeUpCounter(0x2FFF); // 4sn
 
   /* Enable the Wakeup Interrupt */
   RTC_ITConfig(RTC_IT_WUT, ENABLE); 

@@ -14,6 +14,10 @@
 #include "main.h"
 #include "extern_reg.c"
 
+  float  sht_isi;
+	float  sht_nem;
+	int16_t  bmp_isi;
+	int32_t  bmp_basinc;
 /****************************************************************************************************/
 void Bip(void)
 {
@@ -21,6 +25,25 @@ void Bip(void)
 		DelayMs(20);
 		Pin_High(Buzzer);
 }	
+/****************************************************************************************************/
+void Sensorleri_Oku(void)
+{
+	  Pin_High(Pulse_Enb);
+		DelayMs(10);
+	
+	 	if(BMP085_Oku(&bmp_isi,&bmp_basinc))
+		{
+			bmp_isi=0;
+			bmp_basinc=0;
+		}
+		
+	  SHT11_Oku(&sht_isi,&sht_nem);
+	
+   	Pin_Low(Pulse_Enb);
+		Pin_Low(Pulse_1);
+		Pin_Low(Pulse_2);	
+	  
+}
 /****************************************************************************************************/
 void Gprs_Working(void)
 {
@@ -36,7 +59,7 @@ void Gprs_Working(void)
 /****************************************************************************************************/	
 int main(void)
 { 
-	  float  isi,nem;
+	
 		if(RCC_GetFlagStatus(RCC_FLAG_IWDGRST) != RESET ) 
 		{
 				WDT_Reset_S;
@@ -47,16 +70,14 @@ int main(void)
 		IWDG_SetPrescaler(IWDG_Prescaler_256);
 		IWDG_SetReload(0xFFFF); // 30sn sonra yeniden yüklenmezse wdt reset atacak
 		IWDG_ReloadCounter();
-//		IWDG_Enable();
+		IWDG_Enable();
 //-------------- Basic Setup --------------	
-		Pwr_Init(Swd_On); 
+		Pwr_Init(Swd_Off); 
 //------------ Input Setup ----------------
 		Pin_Output_OD(Pulse_1);
-			Pin_Output_OD(Pulse_2);
+			Pin_Output(Pulse_2);
 				Pin_Input(Pulse_3);
 					Pin_Input(Led_PwrMon);
-						Pin_Input(ButonA);
-							Pin_Input(ButonB);	
 //------------ Output Setup ---------------
 		Pin_Output(Pulse_Enb);
 			Pin_Output_OD(Gsm_Rst);
@@ -79,11 +100,11 @@ int main(void)
 //----------- RCT & ALARM Setup ------------
 		RTC_Config();
 //	  Date_Set(__DATE__ __TIME__);	
-		Rtc_Alarm_Hours();
+	//	Rtc_Alarm_Hours();
 		Stop_Mod_Init();
 //-------------- COMs init -----------------
-		Ram_Islem_Com_Init();
-		Usart_Init(Gsm_Com,38400);
+//		Ram_Islem_Com_Init();
+//		Usart_Init(Gsm_Com,38400);
 //-------------- Lcd init ------------------
 		LCD_Pin_Init();
 		fprintf(lcd,"MeasureBox SRS\n");
@@ -99,22 +120,25 @@ int main(void)
 	 //fprintf(dbg,"debug com tested");
 while(1){
 		RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART2, ENABLE); // Debug portu aktif et(ram islem)
+		IWDG_ReloadCounter();
 	
-		LCD_GoTo(0,0);
+			Sensorleri_Oku();
 	
-		if(SHT11_Oku(&isi,&nem))
-		{
-			fprintf(lcd,"ISI: %3.1f\n",isi);
-			fprintf(lcd,"NEM: %3.1f\n",nem);	
-		}
-		else
-			fprintf(lcd,"Sensör Yok!!");
+		  LCD_GoTo(0,0);
+			fprintf(lcd,"SHT-TEMP: %3.2f \n",sht_isi);
+			fprintf(lcd,"HUMI: %3.2f \n",sht_nem);	
+			DelayMs(1000);
 	
-		DelayMs(500);
-		
+		  LCD_GoTo(0,0);
+			fprintf(lcd,"BMP-TEMP: %d.%d \n",bmp_isi/10,bmp_isi%10);
+			fprintf(lcd,"PRESS:%d,%dhPa \n",bmp_basinc/10,bmp_basinc%10);	
+
+	   	DelayMs(1000);
+		  LCD_Lp_Off();
+	
 		RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART2, DISABLE);  // Debug portu kapat
 //------------------- Stop Mod On --------------------
-    Stop();	
+   Stop();	
 //----------------------------------------------------
 	}
 }

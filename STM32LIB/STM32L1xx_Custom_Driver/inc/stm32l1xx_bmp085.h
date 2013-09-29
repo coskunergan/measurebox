@@ -1,17 +1,17 @@
 /**
   ******************************************************************************
-  * @file    stm32l1xx_sht11.h
+  * @file    stm32l1xx_bmp085.h
   * @author  Coskun ERGAN
   * @version V1.0.0
-  * @date    25-Eylül-2013
-  * @brief   SHT11 Isi Nem Sensöru kütüpanesi 
+  * @date    29-Eylül-2013
+  * @brief   Bosch BMP-085 basinç Sensörü kütüpanesi 
   *
 	*  @verbatim
 ********************************************************************************/
 
 /* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef __STM32L1xx_SHT11_H
-#define __STM32L1xx_SHT11_H
+#ifndef __STM32L1xx_BMP085_H
+#define __STM32L1xx_BMP085_H
 
 #ifdef __cplusplus
  extern "C" {
@@ -25,16 +25,14 @@
 /* Exported macro ------------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */
 
-
-uint8_t SHT11_Oku(float *isi, float *nem); 
-uint8_t SHT11_Yaz_Config(uint8_t status);
-
+	
+uint8_t BMP085_Oku(int16_t *isi,int32_t *basinc);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /*__STM32L1xx_sht11_H */
+#endif /*__STM32L1xx_bmp085_H */
 
 /**
   * @}

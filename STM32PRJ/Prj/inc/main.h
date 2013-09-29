@@ -27,6 +27,7 @@
 #include "stm32l1xx_define.h"  // pin isim uyarlamalari 
 #include "stm32l1xx_hd44780.h"  // 2X16 LCD KÜTÜPANES1
 #include "stm32l1xx_sht11.h"  // isi nem sensörü kütüpanesi
+#include "stm32l1xx_bmp085.h"  // bosch basinc sensörü kutupanesi
 
 #include "rtc.h"
 #include "GL865.h"
